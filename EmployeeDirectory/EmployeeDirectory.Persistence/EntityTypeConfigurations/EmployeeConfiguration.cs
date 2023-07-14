@@ -24,6 +24,9 @@ namespace EmployeeDirectory.Persistence.EntityTypeConfigurations
             builder.Property(u => u.FullName)
                 .HasMaxLength(95)
                 .IsRequired();
+            builder.Property(u => u.PhoneNumber)
+                .HasMaxLength(11)
+                .IsRequired();
         }
     }
 }
