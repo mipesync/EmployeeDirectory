@@ -11,6 +11,8 @@ namespace EmployeeDirectory.Persistence.EntityTypeConfigurations
             builder.HasKey(u => u.Id);
             builder.HasIndex(u => u.Id)
                 .IsUnique();
+            builder.HasIndex(u => u.PhoneNumber)
+                .IsUnique();
 
             builder.Property(u => u.FirstName)
                 .HasMaxLength(30)
