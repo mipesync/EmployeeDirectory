@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmployeeDirection.Tests\EmployeeDirection.Tests.csproj" />
     <ProjectReference Include="..\EmployeeDirectory.Persistence\EmployeeDirectory.Persistence.csproj" />
   </ItemGroup>
 

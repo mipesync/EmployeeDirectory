@@ -1,11 +1,12 @@
 using EmployeeDirectory.Persistence;
+using EmployeeDirectory.Web.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace EmployeeDirectory
+namespace EmployeeDirectory.Web
 {
     public class Startup
     {
@@ -21,12 +22,11 @@ namespace EmployeeDirectory
             var connectionString = Configuration.GetConnectionString("SQLite");
             services.AddPersistence(connectionString);
             services.AddControllersWithViews();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -46,6 +46,8 @@ namespace EmployeeDirectory
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<SearchHub>("/search");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
