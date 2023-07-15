@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace EmployeeDirectory.Web
 {
@@ -23,6 +24,7 @@ namespace EmployeeDirectory.Web
             services.AddPersistence(connectionString);
             services.AddControllersWithViews();
             services.AddSignalR();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
