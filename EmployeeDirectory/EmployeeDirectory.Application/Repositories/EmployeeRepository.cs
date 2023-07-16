@@ -10,11 +10,6 @@ namespace EmployeeDirectory.Application.Repositories
     /// <inheritdoc/>
     public class EmployeeRepository : IEmployeeRepository
     {
-        public Guid Add(AddEmployeeDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Employee> GetAll(GetAllDTO dto)
         {
             throw new NotImplementedException();
@@ -26,6 +21,11 @@ namespace EmployeeDirectory.Application.Repositories
         }
 
         public List<Employee> Search(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid Add(AddEmployeeDTO dto)
         {
             throw new NotImplementedException();
         }

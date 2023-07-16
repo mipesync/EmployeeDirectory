@@ -1,3 +1,4 @@
+using EmployeeDirectory.Application;
 using EmployeeDirectory.Persistence;
 using EmployeeDirectory.Web.Hubs;
 using Microsoft.AspNetCore.Builder;
@@ -22,8 +23,12 @@ namespace EmployeeDirectory.Web
         {
             var connectionString = Configuration.GetConnectionString("SQLite");
             services.AddPersistence(connectionString);
+            services.AddApplication();
+
             services.AddControllersWithViews();
+
             services.AddSignalR();
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
