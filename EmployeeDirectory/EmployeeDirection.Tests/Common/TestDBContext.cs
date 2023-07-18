@@ -13,7 +13,7 @@ namespace EmployeeDirection.Tests.Common
         /// <summary>
         /// Идентификатор первого сотрудника из бд
         /// </summary>
-        public static Guid? EmployeeId { get; private set; }
+        public static Guid EmployeeId { get; private set; } = Guid.Empty;
 
         /// <summary>
         /// Создание тестового контекста базы данных
@@ -32,7 +32,7 @@ namespace EmployeeDirection.Tests.Common
             {
                 var employeeId = Guid.NewGuid();
 
-                if (EmployeeId is null) 
+                if (EmployeeId != Guid.Empty) 
                     EmployeeId = employeeId;
 
                 var employee = new Employee
@@ -44,6 +44,7 @@ namespace EmployeeDirection.Tests.Common
                     FullName = $"Сотрудников{i} Сотрудник{i} Сотрудникович{i}",
                     Department = "Отдел " + i,
                     PhoneNumber = "79999999999"
+                        .Substring(0, 11 - i.ToString().Length) + i
                 };
 
                 context.Employees.Add(employee);

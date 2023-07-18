@@ -1,10 +1,15 @@
-﻿namespace EmployeeDirectory.Application.DTOs
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace EmployeeDirectory.Application.DTOs
 {
     /// <summary>
     /// DTO для обновления информации о сотруднике
     /// </summary>
     public class UpdateDetailsDTO
     {
+        [Required(ErrorMessage = "Идентификатор сотрудника обязателен")]
+        public Guid EmployeeId { get; set; }
 #nullable enable
         /// <summary>
         /// Имя сотрудника

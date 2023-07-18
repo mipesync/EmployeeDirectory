@@ -20,8 +20,4 @@
     <ProjectReference Include="..\EmployeeDirectory.Persistence\EmployeeDirectory.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Aggregate\RepositoryTests\EmployeeTests\Exceptions\" />
-  </ItemGroup>
-
 </Project>

@@ -3,6 +3,7 @@ using EmployeeDirectory.Application.DTOs;
 using EmployeeDirectory.Application.Exceptions;
 using EmployeeDirectory.Application.Repository;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
@@ -10,51 +11,65 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
     /// <summary>
     /// Тест метода репозитория <see cref="EmployeeRepository"/> для добавления сотрудника
     /// </summary>
-    public class AddEmployeeTests : TestCommandBase
+    public class UpdateEmployeeTests : TestCommandBase
     {
-        private AddEmployeeDTO dto;
+        private UpdateDetailsDTO dto;
         private EmployeeRepository employeeRepository;
 
-        public AddEmployeeTests()
+        public UpdateEmployeeTests()
         {
-            dto = new AddEmployeeDTO
+            dto = new UpdateDetailsDTO
             {
+                EmployeeId = TestDBContext.EmployeeId,
                 FirstName = "Иван",
                 LastName = "Иванов",
                 MiddleName = "Иванович",
-                PhoneNumber = "79998887766",
+                PhoneNumber = "79999999999",
                 Department = "Маркетинг"
             };
 
             employeeRepository = new EmployeeRepository(_dbContext);
         }
-        
+
         /// <summary>
-        /// Проверяет успешное добавление сотрудника
+        /// Проверяет успешное обновление информации о сотруднике
         /// </summary>
         [Fact]
-        public void Add_Success()
+        public void Update_Success()
         {
             //Arrange
             //Act
-            var result = employeeRepository.Add(dto);
+            var result = employeeRepository.Update(dto);
 
             //Assert
-            Assert.IsType<Guid>(result);
+            Assert.IsType<Task>(result);
+        }
+
+        /// <summary>
+        /// Проверяет выбрасывание исключения <see cref="NotFoundException"/>
+        /// </summary>
+        [Fact]
+        public async Task Update_FailOnNotFoundAsync()
+        {
+            //Arrange
+            dto.EmployeeId = Guid.NewGuid();
+            //Act
+            //Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => employeeRepository.Update(dto));
         }
 
         /// <summary>
         /// Проверяет выбрасывание исключения <see cref="AlreadyExistException"/>
         /// </summary>
         [Fact]
-        public void Add_FailOnNumberAlreadyExist()
+        public async Task Update_FailOnNumberAlreadyExistAsync()
         {
             //Arrange
             dto.PhoneNumber = "79999999999";
 
             //Act
             //Assert
-            Assert.Throws<AlreadyExistException>(() => employeeRepository.Add(dto));
+            await Assert.ThrowsAsync<AlreadyExistException>(() => employeeRepository.Update(dto));
         }
     }
 }
