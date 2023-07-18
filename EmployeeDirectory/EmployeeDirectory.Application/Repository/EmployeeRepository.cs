@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace EmployeeDirectory.Application.Repository
 {
     /// <inheritdoc/>
+    /// Репозиторий с методами операций над сотрудниками
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly IDBContext _dbContext;
