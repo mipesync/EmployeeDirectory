@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EmployeeDirectory.Application.Interfaces.IRepository;
+using System.Collections.Generic;
 
 namespace EmployeeDirectory.Application.DTOs.ReturnDTO
 {
     /// <summary>
     /// DTO, возвращаемое из метода 
-    /// <see cref="Interfaces.IRepositories.IEmployeeRepository.Search(string)"/>
+    /// <see cref="IEmployeeRepository.Search(string)"/>
     /// </summary>
     public class SearchReturnDTO
     {

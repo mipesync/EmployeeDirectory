@@ -1,5 +1,5 @@
-﻿using EmployeeDirectory.Application.Interfaces.IRepositories;
-using EmployeeDirectory.Application.Repositories;
+﻿using EmployeeDirectory.Application.Interfaces.IRepository;
+using EmployeeDirectory.Application.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeeDirectory.Application

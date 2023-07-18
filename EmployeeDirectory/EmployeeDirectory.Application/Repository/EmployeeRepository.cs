@@ -1,15 +1,23 @@
 ﻿using EmployeeDirectory.Application.DTOs;
-using EmployeeDirectory.Application.Interfaces.IRepositories;
+using EmployeeDirectory.Application.Interfaces;
+using EmployeeDirectory.Application.Interfaces.IRepository;
 using EmployeeDirectory.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EmployeeDirectory.Application.Repositories
+namespace EmployeeDirectory.Application.Repository
 {
     /// <inheritdoc/>
     public class EmployeeRepository : IEmployeeRepository
     {
+        private readonly IDBContext _dbContext;
+
+        public EmployeeRepository(IDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public List<Employee> GetAll(GetAllDTO dto)
         {
             throw new NotImplementedException();

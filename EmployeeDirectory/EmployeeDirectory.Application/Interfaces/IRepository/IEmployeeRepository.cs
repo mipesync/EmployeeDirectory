@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EmployeeDirectory.Application.Interfaces.IRepositories
+namespace EmployeeDirectory.Application.Interfaces.IRepository
 {
     /// <summary>
     /// Интерфейс, описывающий методы операций над сотрудниками
