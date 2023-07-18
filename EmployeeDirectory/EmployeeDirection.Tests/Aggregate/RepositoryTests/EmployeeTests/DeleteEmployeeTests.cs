@@ -34,7 +34,8 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
             //Assert
             Assert.IsType<Task>(result);
-            Assert.Throws<NotFoundException>(() => employeeRepository.GetById(employeeId));
+            Assert.Throws<NotFoundException>(
+                () => employeeRepository.GetById(employeeId));
         }
 
         /// <summary>
@@ -48,7 +49,8 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
             //Act
             //Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => employeeRepository.Delete(employeeId));
+            await Assert.ThrowsAsync<NotFoundException>(
+                () => employeeRepository.Delete(employeeId));
         }
     }
 }

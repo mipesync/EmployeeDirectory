@@ -8,7 +8,8 @@ using Xunit;
 namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 {
     /// <summary>
-    /// Тест метода репозитория <see cref="EmployeeRepository"/> для добавления сотрудника
+    /// Тест метода репозитория <see cref="EmployeeRepository"/> для 
+    /// добавления сотрудника
     /// </summary>
     public class AddEmployeeTests : TestCommandBase
     {
@@ -54,7 +55,8 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
             //Act
             //Assert
-            Assert.Throws<AlreadyExistException>(() => employeeRepository.Add(dto));
+            Assert.Throws<AlreadyExistException>(
+                () => employeeRepository.Add(dto));
         }
     }
 }

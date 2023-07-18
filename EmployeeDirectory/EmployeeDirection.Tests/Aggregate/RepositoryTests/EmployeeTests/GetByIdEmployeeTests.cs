@@ -46,7 +46,8 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             var employeeId = Guid.NewGuid();
             //Act
             //Assert
-            Assert.Throws<NotFoundException>(() => employeeRepository.GetById(employeeId));
+            Assert.Throws<NotFoundException>(
+                () => employeeRepository.GetById(employeeId));
         }
     }
 }
