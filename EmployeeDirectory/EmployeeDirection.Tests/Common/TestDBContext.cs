@@ -2,6 +2,7 @@
 using EmployeeDirectory.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace EmployeeDirection.Tests.Common
 {
@@ -32,7 +33,7 @@ namespace EmployeeDirection.Tests.Common
             {
                 var employeeId = Guid.NewGuid();
 
-                if (EmployeeId != Guid.Empty) 
+                if (EmployeeId == Guid.Empty) 
                     EmployeeId = employeeId;
 
                 var employee = new Employee
@@ -48,9 +49,9 @@ namespace EmployeeDirection.Tests.Common
                 };
 
                 context.Employees.Add(employee);
-                context.SaveChanges();
             }
 
+            context.SaveChanges();
             return context;
         }
 

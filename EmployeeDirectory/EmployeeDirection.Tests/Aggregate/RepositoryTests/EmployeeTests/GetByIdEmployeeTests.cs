@@ -3,6 +3,7 @@ using EmployeeDirectory.Application.Exceptions;
 using EmployeeDirectory.Application.Repository;
 using EmployeeDirectory.Domain;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
@@ -24,13 +25,13 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         /// Проверяет успешный вывод информации о сотруднике+
         /// </summary>
         [Fact]
-        public void GetById_Success()
+        public async Task GetById_SuccessAsync()
         {
             //Arrange
-            var employeeId = TestDBContext.EmployeeId;
+            var employeeeId = TestDBContext.EmployeeId;
 
             //Act
-            var result = employeeRepository.GetById(employeeId);
+            var result = await employeeRepository.GetById(employeeeId);
 
             //Assert
             Assert.IsType<Employee>(result);

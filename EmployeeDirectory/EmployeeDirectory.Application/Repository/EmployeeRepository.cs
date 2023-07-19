@@ -4,6 +4,7 @@ using EmployeeDirectory.Application.Exceptions;
 using EmployeeDirectory.Application.Interfaces;
 using EmployeeDirectory.Application.Interfaces.IRepository;
 using EmployeeDirectory.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,18 @@ namespace EmployeeDirectory.Application.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Employee> GetById(Guid employeeId)
+        public async Task<Employee> GetById(Guid employeeId)
         {
-            throw new NotImplementedException();
+            var employee = await _dbContext.Employees
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == employeeId, CancellationToken.None);
+
+            var asd = await _dbContext.Employees.ToListAsync();
+
+            if (employee is null)
+                throw new NotFoundException(employee);
+
+            return employee;
         }
 
         public Task<List<Employee>> Search(string query)
