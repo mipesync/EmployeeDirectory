@@ -17,7 +17,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
         public GetByIdEmployeeTests()
         {
-            employeeRepository = new EmployeeRepository(_dbContext);
+            employeeRepository = new EmployeeRepository(_dbContext, _mapper);
         }
 
         /// <summary>
@@ -40,13 +40,13 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         /// Проверяет выбрасывание исключения <see cref="NotFoundException"/>
         /// </summary>
         [Fact]
-        public void GetById_FailOnNotFoundAsync()
+        public async void GetById_FailOnNotFoundAsync()
         {
             //Arrange
             var employeeId = Guid.NewGuid();
             //Act
             //Assert
-            Assert.Throws<NotFoundException>(
+            await Assert.ThrowsAsync<NotFoundException>(
                 () => employeeRepository.GetById(employeeId));
         }
     }

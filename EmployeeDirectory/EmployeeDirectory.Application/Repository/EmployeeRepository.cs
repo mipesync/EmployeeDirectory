@@ -1,9 +1,13 @@
-﻿using EmployeeDirectory.Application.DTOs;
+﻿using AutoMapper;
+using EmployeeDirectory.Application.DTOs;
+using EmployeeDirectory.Application.Exceptions;
 using EmployeeDirectory.Application.Interfaces;
 using EmployeeDirectory.Application.Interfaces.IRepository;
 using EmployeeDirectory.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmployeeDirectory.Application.Repository
@@ -13,33 +17,36 @@ namespace EmployeeDirectory.Application.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly IDBContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public EmployeeRepository(IDBContext dbContext)
+        public EmployeeRepository(IDBContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public List<Employee> GetAll(GetAllDTO dto)
+        public Task<List<Employee>> GetAll(GetAllDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Employee GetById(Guid employeeId)
+        public Task<Employee> GetById(Guid employeeId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Employee> Search(string query)
+        public Task<List<Employee>> Search(string query)
         {
             throw new NotImplementedException();
         }
 
-        public Guid Add(AddEmployeeDTO dto)
+        public Task<Guid> Add(AddEmployeeDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public string UploadPhoto(UploadPhotoDTO dto, string webRootPath, string hostUrl)
+        public Task<string> UploadPhoto(UploadPhotoDTO dto, string webRootPath, 
+            string hostUrl)
         {
             throw new NotImplementedException();
         }

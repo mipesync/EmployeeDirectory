@@ -3,6 +3,7 @@ using EmployeeDirectory.Application.DTOs;
 using EmployeeDirectory.Application.Exceptions;
 using EmployeeDirectory.Application.Repository;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
@@ -27,7 +28,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
                 Department = "Маркетинг"
             };
 
-            employeeRepository = new EmployeeRepository(_dbContext);
+            employeeRepository = new EmployeeRepository(_dbContext, _mapper);
         }
         
         /// <summary>
@@ -48,14 +49,14 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         /// Проверяет выбрасывание исключения <see cref="AlreadyExistException"/>
         /// </summary>
         [Fact]
-        public void Add_FailOnNumberAlreadyExist()
+        public async Task Add_FailOnNumberAlreadyExistAsync()
         {
             //Arrange
             dto.PhoneNumber = "79999999999";
 
             //Act
             //Assert
-            Assert.Throws<AlreadyExistException>(
+            await Assert.ThrowsAsync<AlreadyExistException>(
                 () => employeeRepository.Add(dto));
         }
     }

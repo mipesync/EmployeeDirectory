@@ -16,14 +16,14 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
         public DeleteEmployeeTests()
         {
-            employeeRepository = new EmployeeRepository(_dbContext);
+            employeeRepository = new EmployeeRepository(_dbContext, _mapper);
         }
 
         /// <summary>
         /// Проверяет успешное удаление пользователя
         /// </summary>
         [Fact]
-        public void Delete_Success()
+        public async Task Delete_SuccessAsync()
         {
 
             //Arrange
@@ -33,8 +33,8 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             var result = employeeRepository.Delete(employeeId);
 
             //Assert
-            Assert.IsType<Task>(result);
-            Assert.Throws<NotFoundException>(
+            await Assert.IsType<Task>(result);
+            await Assert.ThrowsAsync<NotFoundException>(
                 () => employeeRepository.GetById(employeeId));
         }
 
