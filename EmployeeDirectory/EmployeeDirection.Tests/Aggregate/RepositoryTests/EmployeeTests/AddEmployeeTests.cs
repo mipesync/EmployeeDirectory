@@ -35,11 +35,11 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         /// Проверяет успешное добавление сотрудника
         /// </summary>
         [Fact]
-        public void Add_Success()
+        public async Task Add_SuccessAsync()
         {
             //Arrange
             //Act
-            var result = employeeRepository.Add(dto);
+            var result = await employeeRepository.Add(dto);
 
             //Assert
             Assert.IsType<Guid>(result);
