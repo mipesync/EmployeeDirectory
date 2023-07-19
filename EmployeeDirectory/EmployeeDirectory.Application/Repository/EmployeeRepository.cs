@@ -40,9 +40,21 @@ namespace EmployeeDirectory.Application.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Guid> Add(AddEmployeeDTO dto)
+        public async Task<Guid> Add(AddEmployeeDTO dto)
         {
-            throw new NotImplementedException();
+            var isAlreadyExist = _dbContext.Employees.Any(u => 
+                u.PhoneNumber == dto.PhoneNumber);
+
+            if (isAlreadyExist)
+                throw new AlreadyExistException("Сотрудник с таким номером " +
+                    "телефона уже существует");
+
+            var employee = _mapper.Map<Employee>(dto);
+
+            await _dbContext.Employees.AddAsync(employee, CancellationToken.None);
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+            return employee.Id;
         }
 
         public Task<string> UploadPhoto(UploadPhotoDTO dto, string webRootPath, 
