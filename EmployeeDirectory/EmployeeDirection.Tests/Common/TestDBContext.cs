@@ -48,6 +48,7 @@ namespace EmployeeDirection.Tests.Common
                 };
 
                 context.Employees.Add(employee);
+                context.SaveChanges();
             }
 
             return context;
