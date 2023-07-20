@@ -95,9 +95,17 @@ namespace EmployeeDirectory.Application.Repository
             var asd = await _dbContext.Employees.FirstOrDefaultAsync(u => u.Id == dto.EmployeeId);
         }
 
-        public Task Delete(Guid employeeId)
+        public async Task Delete(Guid employeeId)
         {
-            throw new NotImplementedException();
+            var employee = await _dbContext.Employees
+                .FirstOrDefaultAsync(u => u.Id == employeeId,
+                    CancellationToken.None);
+
+            if (employee is null)
+                throw new NotFoundException(employee);
+
+            _dbContext.Employees.Remove(employee);
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
     }
 }
