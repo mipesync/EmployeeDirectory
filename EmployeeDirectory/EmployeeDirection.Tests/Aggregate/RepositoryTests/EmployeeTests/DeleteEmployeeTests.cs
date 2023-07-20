@@ -33,7 +33,6 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             var result = employeeRepository.Delete(employeeId);
 
             //Assert
-            await Assert.IsType<Task>(result);
             await Assert.ThrowsAsync<NotFoundException>(
                 () => employeeRepository.GetById(employeeId));
         }

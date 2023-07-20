@@ -73,9 +73,26 @@ namespace EmployeeDirectory.Application.Repository
             throw new NotImplementedException();
         }
 
-        public Task Update(UpdateDetailsDTO dto)
+        public async Task Update(UpdateDetailsDTO dto)
         {
-            throw new NotImplementedException();
+            var employee = await _dbContext.Employees
+                .FirstOrDefaultAsync(u => u.Id == dto.EmployeeId,
+                    CancellationToken.None);
+
+            if (employee is null)
+                throw new NotFoundException(employee);
+
+            var isAlreadyExist = _dbContext.Employees.Any(u => u.PhoneNumber == dto.PhoneNumber);
+
+            if (isAlreadyExist)
+                throw new AlreadyExistException("Сотрудник с таким номером телефона уже существует");
+
+            employee = _mapper.Map(dto, employee);
+
+            _dbContext.Employees.Update(employee);
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+            var asd = await _dbContext.Employees.FirstOrDefaultAsync(u => u.Id == dto.EmployeeId);
         }
 
         public Task Delete(Guid employeeId)

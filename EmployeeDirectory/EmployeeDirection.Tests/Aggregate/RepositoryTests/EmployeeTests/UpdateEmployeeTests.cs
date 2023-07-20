@@ -24,7 +24,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
                 FirstName = "Иван",
                 LastName = "Иванов",
                 MiddleName = "Иванович",
-                PhoneNumber = "79999999999",
+                PhoneNumber = "79998887766",
                 Department = "Маркетинг"
             };
 
@@ -35,14 +35,18 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         /// Проверяет успешное обновление информации о сотруднике
         /// </summary>
         [Fact]
-        public void Update_Success()
+        public async Task Update_SuccessAsync()
         {
             //Arrange
             //Act
-            var result = employeeRepository.Update(dto);
+            await employeeRepository.Update(dto);
 
             //Assert
-            Assert.IsType<Task>(result);
+            var employee = await employeeRepository.GetById(dto.EmployeeId);
+
+            Assert.Matches(dto.Department, employee.Department);
+            Assert.Matches(dto.PhoneNumber, employee.PhoneNumber);
+            Assert.Matches($"{dto.LastName} {dto.FirstName} {dto.MiddleName}", employee.FullName);
         }
 
         /// <summary>
