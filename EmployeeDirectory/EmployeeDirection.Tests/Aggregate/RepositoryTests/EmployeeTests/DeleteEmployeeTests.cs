@@ -16,7 +16,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
         public DeleteEmployeeTests()
         {
-            employeeRepository = new EmployeeRepository(_dbContext, _mapper);
+            employeeRepository = new EmployeeRepository(_dbContext, _mapper, _fileUploader);
         }
 
         /// <summary>

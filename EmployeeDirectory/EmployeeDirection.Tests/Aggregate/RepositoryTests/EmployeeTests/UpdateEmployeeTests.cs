@@ -28,7 +28,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
                 Department = "Маркетинг"
             };
 
-            employeeRepository = new EmployeeRepository(_dbContext, _mapper);
+            employeeRepository = new EmployeeRepository(_dbContext, _mapper, _fileUploader);
         }
 
         /// <summary>

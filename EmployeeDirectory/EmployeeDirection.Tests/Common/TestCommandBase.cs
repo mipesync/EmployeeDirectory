@@ -9,6 +9,7 @@ namespace EmployeeDirection.Tests.Common
     {
         protected readonly DBContext _dbContext;
         protected readonly IMapper _mapper;
+        protected readonly IFileUploader _fileUploader;
 
         protected TestCommandBase()
         {

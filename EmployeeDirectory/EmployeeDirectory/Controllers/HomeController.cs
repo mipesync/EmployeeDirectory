@@ -1,27 +1,28 @@
-﻿using EmployeeDirectory.Web.Models;
+﻿using EmployeeDirectory.Application.DTOs;
+using EmployeeDirectory.Application.Interfaces.IRepository;
+using EmployeeDirectory.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace EmployeeDirectory.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IEmployeeRepository employeeRepository)
         {
             _logger = logger;
+            _employeeRepository = employeeRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(GetAllDTO dto)
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            var result = await _employeeRepository.GetAll(dto);
+            return View(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
