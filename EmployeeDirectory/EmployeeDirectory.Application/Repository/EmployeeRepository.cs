@@ -26,9 +26,11 @@ namespace EmployeeDirectory.Application.Repository
             _mapper = mapper;
         }
 
-        public Task<List<Employee>> GetAll(GetAllDTO dto)
+        public async Task<List<Employee>> GetAll(GetAllDTO dto)
         {
-            throw new NotImplementedException();
+            var employees = await _dbContext.Employees.ToListAsync(CancellationToken.None);
+
+            return employees;
         }
 
         public async Task<Employee> GetById(Guid employeeId)
@@ -36,8 +38,6 @@ namespace EmployeeDirectory.Application.Repository
             var employee = await _dbContext.Employees
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == employeeId, CancellationToken.None);
-
-            var asd = await _dbContext.Employees.ToListAsync();
 
             if (employee is null)
                 throw new NotFoundException(employee);

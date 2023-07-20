@@ -20,7 +20,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         {
             dto = new UpdateDetailsDTO
             {
-                EmployeeId = TestDBContext.EmployeeId,
+                EmployeeId = TestDBContext.GetEmployeeId(_dbContext),
                 FirstName = "Иван",
                 LastName = "Иванов",
                 MiddleName = "Иванович",

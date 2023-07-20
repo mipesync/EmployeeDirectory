@@ -28,7 +28,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         public async Task GetById_SuccessAsync()
         {
             //Arrange
-            var employeeeId = TestDBContext.EmployeeId;
+            var employeeeId = TestDBContext.GetEmployeeId(_dbContext);
 
             //Act
             var result = await employeeRepository.GetById(employeeeId);

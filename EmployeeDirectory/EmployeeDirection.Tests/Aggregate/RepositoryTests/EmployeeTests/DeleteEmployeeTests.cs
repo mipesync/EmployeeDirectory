@@ -27,7 +27,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
         {
 
             //Arrange
-            var employeeId = TestDBContext.EmployeeId;
+            var employeeId = TestDBContext.GetEmployeeId(_dbContext);
 
             //Act
             var result = employeeRepository.Delete(employeeId);

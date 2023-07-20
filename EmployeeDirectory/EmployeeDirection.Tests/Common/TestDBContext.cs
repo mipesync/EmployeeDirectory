@@ -2,6 +2,8 @@
 using EmployeeDirectory.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeDirection.Tests.Common
@@ -11,11 +13,6 @@ namespace EmployeeDirection.Tests.Common
     /// </summary>
     public class TestDBContext
     {
-        /// <summary>
-        /// Идентификатор первого сотрудника из бд
-        /// </summary>
-        public static Guid EmployeeId { get; private set; } = Guid.Empty;
-
         /// <summary>
         /// Создание тестового контекста базы данных
         /// </summary>
@@ -32,9 +29,6 @@ namespace EmployeeDirection.Tests.Common
             for (int i = 0; i < 50; i++)
             {
                 var employeeId = Guid.NewGuid();
-
-                if (EmployeeId == Guid.Empty) 
-                    EmployeeId = employeeId;
 
                 var employee = new Employee
                 {
@@ -53,6 +47,12 @@ namespace EmployeeDirection.Tests.Common
 
             context.SaveChanges();
             return context;
+        }
+
+        public static Guid GetEmployeeId(DBContext context)
+        {
+            var employee = context.Employees.First();
+            return employee.Id;
         }
 
         /// <summary>
