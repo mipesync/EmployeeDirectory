@@ -13,7 +13,7 @@ namespace EmployeeDirectory.Application.DTOs
         /// Идентификатор сотрудника
         /// </summary>
         [Required(ErrorMessage = "Идентификатор сотрудника обязателен")]
-        public Guid UserId { get; set; }
+        public Guid EmployeeId { get; set; }
         /// <summary>
         /// Фотография сотрудника
         /// </summary>

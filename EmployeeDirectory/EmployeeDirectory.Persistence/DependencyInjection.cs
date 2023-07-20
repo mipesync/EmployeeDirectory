@@ -1,4 +1,5 @@
 ﻿using EmployeeDirectory.Application.Interfaces;
+using EmployeeDirectory.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,7 @@ namespace EmployeeDirectory.Persistence
         {
             services.AddDbContext<DBContext>(option => option.UseSqlite(connectionString));
             services.AddScoped<IDBContext>(provider => provider.GetService<DBContext>());
+            services.AddScoped<IFileUploader, FileUploader>();
 
             return services;
         }
