@@ -16,6 +16,6 @@ namespace EmployeeDirectory.Application.DTOs
         /// Какое количество сотрудников вывести
         /// </summary>
         [Required(ErrorMessage = "Количество сотрудников обязательно")]
-        public int Count { get; set; }
+        public int Count { get; set; } = 10;
     }
 }

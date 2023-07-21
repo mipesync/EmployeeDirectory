@@ -1,8 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using EmployeeDirectory.Domain;
+@model EmployeeListViewModel;
+@{
+    ViewData["Title"] = "Список всех сотрудников";
 }
 
+<script type="text/javascript">
+    function getById(employeeId) {
+        console.log(employeeId);
+        location.href = "@Url.Action("GetById", "Employee", new { employeeId = "employeeId"})"
+            .replace("employeeId", employeeId.toString());
+    }
+</script>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Список всех сотрудников</h1>
+    <input class="input-group-text m-3 w-50 text-left" type="search" 
+        placeholder="Введите ФИО или номер телефона" oninput="console.log(this.value)" />
+    <table class="table w-fit">
+        <thead>
+            <tr>
+                <th>
+                    <a>Фотография</a>
+                </th>
+                <th>
+                    <a>ФИО</a>
+                </th>
+                <th>
+                    <a>Отдел</a>
+                </th>
+                <th>
+                    <a>Номер телефона</a>
+                </th>
+            </tr>
+        </thead>
+        @foreach (var employee in Model.Employees)
+        {
+            <tbody>
+                <tr onclick="getById('@employee.Id')" class="tableItem">
+                    <td class="flex justify-center">
+                        <img class="w-16"
+                         src="https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg" />
+                    </td>
+                    <td class="align-middle">
+                        <a>@Html.DisplayFor(modelItem => employee.FullName)</a>
+                    </td>
+                    <td class="align-middle">
+                        <a>@Html.DisplayFor(modelItem => employee.Department)</a>
+                    </td>
+                    <td class="align-middle">
+                        <a>@Html.DisplayFor(modelItem => employee.PhoneNumber)</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+    <div class="flex flex-row @(Model.Params.From != 0 ? "justify-content-between" : "justify-content-end")">
+        @{
+            if (Model.Params.From != 0)
+            {
+                <p><a asp-controller="Home" asp-action="Index"
+                        asp-route-from="@(Model.Params.From - 10)" 
+                        class="font-bold text-secondary">Предыдущая страница</a></p>
+            }
+            if (Model.Employees.Count == Model.Params.Count)
+            {
+                <p>
+                    <a asp-controller="Home" asp-action="Index"
+                   asp-route-from="@(Model.Params.From + 10)"
+                   class="font-bold text-primary">Следующая страница</a>
+                </p>
+            }
+        }
+    </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using EmployeeDirectory.Domain;
+﻿using EmployeeDirectory.Application.DTOs;
+using EmployeeDirectory.Domain;
 using System.Collections.Generic;
 
 namespace EmployeeDirectory.Web.Models
@@ -12,5 +13,9 @@ namespace EmployeeDirectory.Web.Models
         /// Список сотрудников
         /// </summary>
         public List<Employee> Employees { get; set; } = new List<Employee>();
+        /// <summary>
+        /// Параметры вывода
+        /// </summary>
+        public GetAllDTO Params { get; set; }
     }
 }

@@ -31,7 +31,8 @@ namespace EmployeeDirectory.Application.Repository
 
         public async Task<List<Employee>> GetAll(GetAllDTO dto)
         {
-            var employees = await _dbContext.Employees.ToListAsync(CancellationToken.None);
+            var employees = await _dbContext.Employees.Skip(dto.From).Take(dto.Count)
+                .ToListAsync(CancellationToken.None);
 
             return employees;
         }

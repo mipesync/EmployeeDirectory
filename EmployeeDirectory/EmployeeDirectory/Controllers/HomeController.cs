@@ -22,7 +22,14 @@ namespace EmployeeDirectory.Web.Controllers
         public async Task<IActionResult> Index(GetAllDTO dto)
         {
             var result = await _employeeRepository.GetAll(dto);
-            return View(result);
+
+            var view = new EmployeeListViewModel
+            {
+                Employees = result,
+                Params = dto
+            };
+
+            return View(view);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
