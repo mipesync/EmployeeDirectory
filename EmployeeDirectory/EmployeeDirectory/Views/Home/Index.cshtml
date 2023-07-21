@@ -2,6 +2,9 @@
 @model EmployeeListViewModel;
 @{
     ViewData["Title"] = "Список всех сотрудников";
+    var listIsEmpty = Model.Employees.Count == 0 ? true : false;
+    var defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
+    string profilePhoto = string.Empty;
 }
 
 <script type="text/javascript">
@@ -14,8 +17,16 @@
 
 <div class="text-center">
     <h1 class="display-4">Список всех сотрудников</h1>
-    <input class="input-group-text m-3 w-50 text-left" type="search" 
-        placeholder="Введите ФИО или номер телефона" oninput="console.log(this.value)" />
+    <div class="flex flex-row @(!listIsEmpty ? "justify-content-between" : "justify-content-end")  items-center">
+        @if (!listIsEmpty)
+        {
+            <input class="input-group-text m-3 w-50 text-left" type="search"
+                placeholder="Введите ФИО или номер телефона" />        
+        }
+        <p><a asp-controller="" asp-action=""
+               class="font-bold text-success">Добавить сотрудника</a>
+        </p>
+    </div>
     <table class="table w-fit">
         <thead>
             <tr>
@@ -33,43 +44,63 @@
                 </th>
             </tr>
         </thead>
-        @foreach (var employee in Model.Employees)
-        {
-            <tbody>
-                <tr onclick="getById('@employee.Id')" class="tableItem">
-                    <td class="flex justify-center">
-                        <img class="w-16"
-                         src="https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg" />
-                    </td>
-                    <td class="align-middle">
-                        <a>@Html.DisplayFor(modelItem => employee.FullName)</a>
-                    </td>
-                    <td class="align-middle">
-                        <a>@Html.DisplayFor(modelItem => employee.Department)</a>
-                    </td>
-                    <td class="align-middle">
-                        <a>@Html.DisplayFor(modelItem => employee.PhoneNumber)</a>
-                    </td>
-                </tr>
-            </tbody>
+        @{
+            if (!listIsEmpty)
+            {
+                foreach (var employee in Model.Employees)
+                {
+                    @if (employee.PhotoUrl == null)
+                    {
+                        profilePhoto = defaultProfilePhoto;
+                    }
+                    else
+                    {
+                        profilePhoto = employee.PhotoUrl;
+                    }
+                    <tbody>
+                        <tr onclick="getById('@employee.Id')" class="tableItem">
+                            <td class="flex justify-center">
+                                <img class="w-16"
+                             src="@profilePhoto" />
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.FullName)</a>
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.Department)</a>
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.PhoneNumber)</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }                
+            }
         }
     </table>
-    <div class="flex flex-row @(Model.Params.From != 0 ? "justify-content-between" : "justify-content-end")">
-        @{
-            if (Model.Params.From != 0)
-            {
-                <p><a asp-controller="Home" asp-action="Index"
-                        asp-route-from="@(Model.Params.From - 10)" 
-                        class="font-bold text-secondary">Предыдущая страница</a></p>
+    @if (listIsEmpty)
+    {
+        <a>Список сотрудников пуст</a>
+    }
+    else
+    {
+        <div class="flex flex-row @(Model.Params.From != 0 ? "justify-content-between" : "justify-content-end")">
+            @{
+                if (Model.Params.From != 0)
+                {
+                    <p><a asp-controller="Home" asp-action="Index"
+                            asp-route-from="@(Model.Params.From - 10)" 
+                            class="font-bold text-secondary">Предыдущая страница</a></p>
+                }
+                if (Model.Employees.Count == Model.Params.Count)
+                {
+                    <p>
+                        <a asp-controller="Home" asp-action="Index"
+                       asp-route-from="@(Model.Params.From + 10)"
+                       class="font-bold text-primary">Следующая страница</a>
+                    </p>
+                }
             }
-            if (Model.Employees.Count == Model.Params.Count)
-            {
-                <p>
-                    <a asp-controller="Home" asp-action="Index"
-                   asp-route-from="@(Model.Params.From + 10)"
-                   class="font-bold text-primary">Следующая страница</a>
-                </p>
-            }
-        }
-    </div>
+        </div>        
+    }
 </div>
