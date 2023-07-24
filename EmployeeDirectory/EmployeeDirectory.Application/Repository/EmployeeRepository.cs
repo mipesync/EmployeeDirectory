@@ -37,10 +37,7 @@ namespace EmployeeDirectory.Application.Repository
                 .AsNoTracking()
                 .ToListAsync(CancellationToken.None);
 
-            foreach (var employee in employees)
-            {
-                employee.PhotoUrl = UrlParse(hostUrl, employee.Id.ToString(), employee.PhotoUrl);
-            }
+            employees = UrlParse(employees, hostUrl);
 
             return employees;
         }
@@ -59,9 +56,15 @@ namespace EmployeeDirectory.Application.Repository
             return employee;
         }
 
-        public Task<List<Employee>> Search(string query, string hostUrl)
+        public async Task<List<Employee>> Search(string query, string hostUrl)
         {
-            throw new NotImplementedException();
+            var employees = await _dbContext.Employees
+                .Where(u => u.FullName.Contains(query) || u.PhoneNumber.Contains(query))
+                .ToListAsync(CancellationToken.None);
+
+            employees = UrlParse(employees, hostUrl);
+
+            return employees;
         }
 
         public async Task<Guid> Add(AddEmployeeDTO dto)
@@ -148,6 +151,17 @@ namespace EmployeeDirectory.Application.Repository
             await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
 
+        private List<Employee> UrlParse(List<Employee> employees, string baseUrl)
+        {
+            for (int i = 0; i < employees.Count; i++)
+            {
+                employees[i].PhotoUrl = UrlParse(baseUrl, 
+                    employees[i].Id.ToString(), 
+                    employees[i].PhotoUrl);
+            }
+
+            return employees;
+        }
         private string UrlParse(string baseUrl, string baseDir, string url)
         {
             if (url is null || url == string.Empty)

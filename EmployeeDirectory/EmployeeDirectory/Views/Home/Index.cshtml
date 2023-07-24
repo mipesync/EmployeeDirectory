@@ -7,12 +7,76 @@
     string profilePhoto = string.Empty;
 }
 
+<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
 <script type="text/javascript">
+    const defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
+
     function getById(id) {
         console.log(id);
         location.href = "@Url.Action("Details", "Employee", new { employeeId = "id"})"
             .replace("id", id.toString());
     }
+        
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/search")
+        .build();
+ 
+    hubConnection.on("Search", function (data) {
+        console.log(data);
+
+        let searchContainer = document.getElementById("searchContainer");        
+        $('#searchContainer').empty();
+        for (let i = 0; i < data.length; i++){
+            console.log(data[i]);
+
+            let table = document.createElement("table");
+            table.className = "table";
+
+            let tbody = document.createElement("tbody");
+
+            let tr = document.createElement("tr");
+            tr.className = "tableItem";
+            tr.onclick = function(){
+                getById(data[i].id);
+            };
+
+            let tdImg = document.createElement("td");
+            tdImg.className = "flex justify-center";
+
+            let img = document.createElement("img");
+            img.className = "w-16 h-16 object-cover";
+            img.src = data[i].photoUrl === null ? defaultProfilePhoto : data[i].photoUrl;
+            tdImg.appendChild(img);
+
+            let tdFullName = document.createElement("td");
+            tdFullName.className = "align-middle";
+            let aFullName = document.createElement("a");
+            aFullName.textContent = data[i].fullName;
+            tdFullName.appendChild(aFullName);
+
+            let tdPhoneNumber = document.createElement("td");
+            tdPhoneNumber.className = "align-middle";
+            let aPhoneNumber = document.createElement("a");
+            aPhoneNumber.textContent = data[i].phoneNumber;
+            tdPhoneNumber.appendChild(aPhoneNumber);
+
+            tr.appendChild(tdImg);
+            tr.appendChild(tdFullName);
+            tr.appendChild(tdPhoneNumber);
+            tbody.appendChild(tr);
+            table.appendChild(tbody);
+
+            searchContainer.appendChild(table);
+        }
+    });
+ 
+    function searchEmployees(query) {
+        hubConnection.invoke("Search", query);
+    }
+
+    hubConnection.start();
+
 </script>
 
 <div class="text-center">
@@ -20,8 +84,15 @@
     <div class="flex flex-row @(!listIsEmpty ? "justify-content-between" : "justify-content-end")  items-center">
         @if (!listIsEmpty)
         {
-            <input class="input-group-text m-3 w-50 text-left" type="search"
-                placeholder="Введите ФИО или номер телефона" />        
+            <div class="w-1/2">
+                <div class="relative">
+                    <input class="input-group-text m-3 w-full text-left" type="search"
+                       oninput="searchEmployees(this.value)"
+                       placeholder="Введите ФИО или номер телефона" />
+                    <div id="searchContainer" class="absolute bg-light">
+                    </div>
+                </div>
+            </div>
         }
         <p><a asp-controller="Employee" asp-action="Add"
                class="font-bold text-success">Добавить сотрудника</a>
