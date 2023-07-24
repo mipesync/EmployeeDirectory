@@ -21,7 +21,7 @@ namespace EmployeeDirectory.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("SQLite");
+            var connectionString = Configuration.GetConnectionString("SQLServer");
             services.AddPersistence(connectionString);
             services.AddApplication();
 

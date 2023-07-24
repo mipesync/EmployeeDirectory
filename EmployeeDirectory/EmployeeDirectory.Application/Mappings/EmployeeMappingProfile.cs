@@ -18,7 +18,6 @@ namespace EmployeeDirectory.Application.Mappings
                     $"{u.LastName} {u.FirstName} {u.MiddleName}"));
 
             CreateMap<UpdateDetailsDTO, Employee>(MemberList.Source)
-                .ForMember(employee => employee.Id, opt => opt.MapFrom(u => u.EmployeeId))
                 .ForMember(employee => employee.FullName, opt => opt.MapFrom(u =>
                     $"{u.LastName} {u.FirstName} {u.MiddleName}"))
                 .ForMember(employee => employee.FirstName, opt => opt.Condition(u =>

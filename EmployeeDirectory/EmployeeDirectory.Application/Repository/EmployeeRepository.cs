@@ -29,15 +29,21 @@ namespace EmployeeDirectory.Application.Repository
             _fileUploader = fileUploader;
         }
 
-        public async Task<List<Employee>> GetAll(GetAllDTO dto)
+        public async Task<List<Employee>> GetAll(GetAllDTO dto, string hostUrl)
         {
             var employees = await _dbContext.Employees.Skip(dto.From).Take(dto.Count)
+                .AsNoTracking()
                 .ToListAsync(CancellationToken.None);
+
+            foreach (var employee in employees)
+            {
+                employee.PhotoUrl = UrlParse(hostUrl, employee.Id.ToString(), employee.PhotoUrl);
+            }
 
             return employees;
         }
 
-        public async Task<Employee> GetById(Guid employeeId)
+        public async Task<Employee> GetById(Guid employeeId, string hostUrl)
         {
             var employee = await _dbContext.Employees
                 .AsNoTracking()
@@ -46,10 +52,12 @@ namespace EmployeeDirectory.Application.Repository
             if (employee is null)
                 throw new NotFoundException(employee);
 
+            employee.PhotoUrl = UrlParse(hostUrl, employee.Id.ToString(), employee.PhotoUrl);
+
             return employee;
         }
 
-        public Task<List<Employee>> Search(string query)
+        public Task<List<Employee>> Search(string query, string hostUrl)
         {
             throw new NotImplementedException();
         }
@@ -75,11 +83,16 @@ namespace EmployeeDirectory.Application.Repository
             string hostUrl)
         {
             var employee = await _dbContext.Employees
-                .FirstOrDefaultAsync(u => u.Id == dto.EmployeeId,
-                    CancellationToken.None);
+                .FirstOrDefaultAsync(u => u.Id == dto.EmployeeId, CancellationToken.None);
 
             if (employee is null)
                 throw new NotFoundException(employee);
+
+            if (employee.PhotoUrl != null)
+            {
+                var path = Path.Combine(webRootPath, employee.Id.ToString(), employee.PhotoUrl);
+                File.Delete(path);
+            }
 
             _fileUploader.File = dto.Photo;
             _fileUploader.WebRootPath = webRootPath is null
@@ -99,34 +112,32 @@ namespace EmployeeDirectory.Application.Repository
             return filePath;
 
         }
-
+        
         public async Task Update(UpdateDetailsDTO dto)
         {
             var employee = await _dbContext.Employees
-                .FirstOrDefaultAsync(u => u.Id == dto.EmployeeId,
-                    CancellationToken.None);
+                .FirstOrDefaultAsync(u => u.Id == dto.EmployeeId, CancellationToken.None);
 
             if (employee is null)
                 throw new NotFoundException(employee);
 
             var isAlreadyExist = _dbContext.Employees.Any(u => u.PhoneNumber == dto.PhoneNumber);
 
-            if (isAlreadyExist)
+            if (isAlreadyExist && dto.PhoneNumber != employee.PhoneNumber)
                 throw new AlreadyExistException("Сотрудник с таким номером телефона уже существует");
 
             employee = _mapper.Map(dto, employee);
 
+            _dbContext.Employees.Attach(employee).State = EntityState.Modified;
             _dbContext.Employees.Update(employee);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            var asd = await _dbContext.Employees.FirstOrDefaultAsync(u => u.Id == dto.EmployeeId);
         }
+
 
         public async Task Delete(Guid employeeId)
         {
             var employee = await _dbContext.Employees
-                .FirstOrDefaultAsync(u => u.Id == employeeId,
-                    CancellationToken.None);
+                .FirstOrDefaultAsync(u => u.Id == employeeId, CancellationToken.None);
 
             if (employee is null)
                 throw new NotFoundException(employee);

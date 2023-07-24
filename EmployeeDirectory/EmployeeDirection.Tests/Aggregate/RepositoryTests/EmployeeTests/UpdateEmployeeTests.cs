@@ -42,7 +42,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             await employeeRepository.Update(dto);
 
             //Assert
-            var employee = await employeeRepository.GetById(dto.EmployeeId);
+            var employee = await employeeRepository.GetById(dto.EmployeeId, string.Empty);
 
             Assert.Matches(dto.Department, employee.Department);
             Assert.Matches(dto.PhoneNumber, employee.PhoneNumber);

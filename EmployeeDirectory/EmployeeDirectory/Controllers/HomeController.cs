@@ -10,18 +10,17 @@ namespace EmployeeDirectory.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private string UrlRaw => $"{Request.Scheme}://{Request.Host}";
         private readonly IEmployeeRepository _employeeRepository;
 
-        public HomeController(ILogger<HomeController> logger, IEmployeeRepository employeeRepository)
+        public HomeController(IEmployeeRepository employeeRepository)
         {
-            _logger = logger;
             _employeeRepository = employeeRepository;
         }
 
         public async Task<IActionResult> Index(GetAllDTO dto)
         {
-            var result = await _employeeRepository.GetAll(dto);
+            var result = await _employeeRepository.GetAll(dto, UrlRaw);
 
             var view = new EmployeeListViewModel
             {

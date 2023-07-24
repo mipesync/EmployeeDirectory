@@ -18,7 +18,7 @@ namespace EmployeeDirectory.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services,
             string connectionString)
         {
-            services.AddDbContext<DBContext>(option => option.UseSqlite(connectionString));
+            services.AddDbContext<DBContext>(option => option.UseSqlServer(connectionString));
             services.AddScoped<IDBContext>(provider => provider.GetService<DBContext>());
             services.AddScoped<IFileUploader, FileUploader>();
 

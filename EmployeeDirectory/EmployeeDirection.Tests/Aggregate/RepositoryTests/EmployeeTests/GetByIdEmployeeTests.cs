@@ -31,7 +31,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             var employeeeId = TestDBContext.GetEmployeeId(_dbContext);
 
             //Act
-            var result = await employeeRepository.GetById(employeeeId);
+            var result = await employeeRepository.GetById(employeeeId, string.Empty);
 
             //Assert
             Assert.IsType<Employee>(result);
@@ -48,7 +48,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
             //Act
             //Assert
             await Assert.ThrowsAsync<NotFoundException>(
-                () => employeeRepository.GetById(employeeId));
+                () => employeeRepository.GetById(employeeId, string.Empty));
         }
     }
 }

@@ -8,10 +8,10 @@
 }
 
 <script type="text/javascript">
-    function getById(employeeId) {
-        console.log(employeeId);
-        location.href = "@Url.Action("GetById", "Employee", new { employeeId = "employeeId"})"
-            .replace("employeeId", employeeId.toString());
+    function getById(id) {
+        console.log(id);
+        location.href = "@Url.Action("Details", "Employee", new { employeeId = "id"})"
+            .replace("id", id.toString());
     }
 </script>
 
@@ -60,7 +60,7 @@
                     <tbody>
                         <tr onclick="getById('@employee.Id')" class="tableItem">
                             <td class="flex justify-center">
-                                <img class="w-16"
+                                <img class="w-16 h-16 object-cover"
                              src="@profilePhoto" />
                             </td>
                             <td class="align-middle">

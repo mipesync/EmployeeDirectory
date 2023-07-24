@@ -34,7 +34,7 @@ namespace EmployeeDirection.Tests.Aggregate.RepositoryTests.EmployeeTests
 
             //Assert
             await Assert.ThrowsAsync<NotFoundException>(
-                () => employeeRepository.GetById(employeeId));
+                () => employeeRepository.GetById(employeeId, string.Empty));
         }
 
         /// <summary>

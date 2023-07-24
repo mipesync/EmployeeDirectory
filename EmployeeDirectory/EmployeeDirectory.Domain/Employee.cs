@@ -39,6 +39,6 @@ namespace EmployeeDirectory.Domain
         /// <summary>
         /// Фотография сотрудника
         /// </summary>
-        public string? PhotoUrl { get; set; } 
+        public string? PhotoUrl { get; set; }
     }
 }
