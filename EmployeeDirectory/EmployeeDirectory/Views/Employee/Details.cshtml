@@ -1,0 +1,66 @@
+﻿@using EmployeeDirectory.Application.DTOs;
+@using EmployeeDirectory.Domain;
+@model Employee
+@{
+    var defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Информация о сотруднике</h1>
+    <div class="flex flex-row justify-center mt-5 gap-5">
+        <div>
+            <form asp-action="Upload" asp-controller="Employee" enctype="multipart/form-data"
+                class="flex flex-col justiry-center gap-5">
+                <label class="control-label">Фотография</label>
+                <input asp-for="@(new UploadPhotoDTO().EmployeeId)" class="form-control" value="@Model.Id" hidden="true" />
+                <img src="@(Model.PhotoUrl is null ? defaultProfilePhoto : Model.PhotoUrl)"
+                     class="w-64 h-64 object-cover" />
+                <input asp-for="@(new UploadPhotoDTO().Photo)" type="file" accept="image/png, image/jpeg" />
+                <input type="submit" value="Загрузить" class="btn btn-primary" />
+            </form>
+        </div>
+        <div class="col-md-4 grow">
+            <form method="put" 
+                  data-ajax="true"
+                  data-ajax-method="put"
+                  data-ajax-url="@Url.Action("Update", "Employee")"
+                  data-ajax-update="#updateDiv">
+                <input asp-for="@(new UpdateDetailsDTO().EmployeeId)" class="form-control" value="@Model.Id" hidden="true" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@(new UpdateDetailsDTO().LastName)" class="control-label">Фамилия</label>
+                    <input asp-for="@(new UpdateDetailsDTO().LastName)" class="form-control" value="@Model.LastName" />
+                    <span asp-validation-for="@(new UpdateDetailsDTO().LastName)" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@(new UpdateDetailsDTO().FirstName)" class="control-label">Имя</label>
+                    <input asp-for="@(new UpdateDetailsDTO().FirstName)" class="form-control" value="@Model.FirstName" />
+                    <span asp-validation-for="@(new UpdateDetailsDTO().FirstName)" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@(new UpdateDetailsDTO().MiddleName)" class="control-label">Отчество</label>
+                    <input asp-for="@(new UpdateDetailsDTO().MiddleName)" class="form-control" value="@Model.MiddleName" />
+                    <span asp-validation-for="@(new UpdateDetailsDTO().MiddleName)" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@(new UpdateDetailsDTO().Department)" class="control-label">Отдел</label>
+                    <input asp-for="@(new UpdateDetailsDTO().Department)" type="form-control" class="form-control" value="@Model.Department" />
+                    <span asp-validation-for="@(new UpdateDetailsDTO().Department)" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@(new UpdateDetailsDTO().PhoneNumber)" class="control-label">Номер телефона</label>
+                    <input asp-for="@(new UpdateDetailsDTO().PhoneNumber)" type="form-control" class="form-control" value="@Model.PhoneNumber" />
+                    <span asp-validation-for="@(new UpdateDetailsDTO().PhoneNumber)" class="text-danger"></span>
+                </div>
+                <font color="#FF1827"><a style="font-size:15px;">@ViewData["ErrorMessage"]</a></font>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+            <a asp-action="Delete" asp-controller="Employee" asp-route-employeeId="@Model.Id" 
+                class="font-bold text-danger">Удалить сотрудника</a>
+        </div>
+    </div>
+    <p id="updateDiv" class="font-weight-bold text-success"></p>
+</div>

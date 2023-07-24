@@ -1,0 +1,176 @@
+﻿@using EmployeeDirectory.Domain;
+@model EmployeeListViewModel;
+@{
+    ViewData["Title"] = "Список всех сотрудников";
+    var listIsEmpty = Model.Employees.Count == 0 ? true : false;
+    var defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
+    string profilePhoto = string.Empty;
+}
+
+<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script type="text/javascript">
+    const defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
+
+    function getById(id) {
+        location.href = "@Url.Action("Details", "Employee", new { employeeId = "id"})"
+            .replace("id", id.toString());
+    }
+        
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/search")
+        .build();
+ 
+    hubConnection.on("Search", function (data) {
+        let searchContainer = document.getElementById("searchContainer");        
+        $('#searchContainer').empty();
+        for (let i = 0; i < data.length; i++){
+            let table = document.createElement("table");
+            table.className = "table";
+
+            let tbody = document.createElement("tbody");
+
+            let tr = document.createElement("tr");
+            tr.className = "tableItem";
+            tr.onclick = function(){
+                getById(data[i].id);
+            };
+
+            let tdImg = document.createElement("td");
+            tdImg.className = "flex justify-center";
+
+            let img = document.createElement("img");
+            img.className = "w-16 h-16 object-cover";
+            img.src = data[i].photoUrl === null ? defaultProfilePhoto : data[i].photoUrl;
+            tdImg.appendChild(img);
+
+            let tdFullName = document.createElement("td");
+            tdFullName.className = "align-middle";
+            let aFullName = document.createElement("a");
+            aFullName.textContent = data[i].fullName;
+            tdFullName.appendChild(aFullName);
+
+            let tdPhoneNumber = document.createElement("td");
+            tdPhoneNumber.className = "align-middle";
+            let aPhoneNumber = document.createElement("a");
+            aPhoneNumber.textContent = data[i].phoneNumber;
+            tdPhoneNumber.appendChild(aPhoneNumber);
+
+            tr.appendChild(tdImg);
+            tr.appendChild(tdFullName);
+            tr.appendChild(tdPhoneNumber);
+            tbody.appendChild(tr);
+            table.appendChild(tbody);
+
+            searchContainer.appendChild(table);
+        }
+    });
+ 
+    function searchEmployees(query) {
+        hubConnection.invoke("Search", query);
+    }
+
+    function clearSearch(){
+        setTimeout(() => { $('#searchContainer').empty() }, 100);        
+    }
+
+    hubConnection.start();
+
+</script>
+
+<div class="text-center">
+    <h1 class="display-4">Список всех сотрудников</h1>
+    <div class="flex flex-row @(!listIsEmpty ? "justify-content-between" : "justify-content-end")  items-center">
+        @if (!listIsEmpty)
+        {
+            <div class="w-1/2">
+                <div class="relative">
+                    <input class="input-group-text m-3 w-full text-left" type="search"
+                       oninput="searchEmployees(this.value)" onblur="clearSearch()"
+                       placeholder="Введите ФИО или номер телефона" />
+                    <div id="searchContainer" class="absolute bg-light">
+                    </div>
+                </div>
+            </div>
+        }
+        <p><a asp-controller="Employee" asp-action="Add"
+               class="font-bold text-success">Добавить сотрудника</a>
+        </p>
+    </div>
+    <table class="table w-fit">
+        <thead>
+            <tr>
+                <th>
+                    <a>Фотография</a>
+                </th>
+                <th>
+                    <a>ФИО</a>
+                </th>
+                <th>
+                    <a>Отдел</a>
+                </th>
+                <th>
+                    <a>Номер телефона</a>
+                </th>
+            </tr>
+        </thead>
+        @{
+            if (!listIsEmpty)
+            {
+                foreach (var employee in Model.Employees)
+                {
+                    @if (employee.PhotoUrl == null)
+                    {
+                        profilePhoto = defaultProfilePhoto;
+                    }
+                    else
+                    {
+                        profilePhoto = employee.PhotoUrl;
+                    }
+                    <tbody>
+                        <tr onclick="getById('@employee.Id')" class="tableItem">
+                            <td class="flex justify-center">
+                                <img class="w-16 h-16 object-cover"
+                             src="@profilePhoto" />
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.FullName)</a>
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.Department)</a>
+                            </td>
+                            <td class="align-middle">
+                                <a>@Html.DisplayFor(modelItem => employee.PhoneNumber)</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }                
+            }
+        }
+    </table>
+    @if (listIsEmpty)
+    {
+        <a>Список сотрудников пуст</a>
+    }
+    else
+    {
+        <div class="flex flex-row @(Model.Params.From != 0 ? "justify-content-between" : "justify-content-end")">
+            @{
+                if (Model.Params.From != 0)
+                {
+                    <p><a asp-controller="Home" asp-action="Index"
+                            asp-route-from="@(Model.Params.From - 10)" 
+                            class="font-bold text-secondary">Предыдущая страница</a></p>
+                }
+                if (Model.Employees.Count == Model.Params.Count)
+                {
+                    <p>
+                        <a asp-controller="Home" asp-action="Index"
+                       asp-route-from="@(Model.Params.From + 10)"
+                       class="font-bold text-primary">Следующая страница</a>
+                    </p>
+                }
+            }
+        </div>        
+    }
+</div>
