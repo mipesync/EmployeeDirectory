@@ -26,6 +26,20 @@ namespace EmployeeDirectory.Web.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddEmployeeDTO dto)
+        {
+            var result = await _employeeRepository.Add(dto);
+
+            return RedirectToAction("Details", new { employeeId = result });
+        }
+
         public async Task<IActionResult> Update(UpdateDetailsDTO dto)
         {
             await _employeeRepository.Update(dto);

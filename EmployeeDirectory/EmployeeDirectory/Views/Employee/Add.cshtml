@@ -1,0 +1,45 @@
+﻿@using EmployeeDirectory.Application.DTOs;
+@model AddEmployeeDTO;
+
+<div class="text-center">
+    <h1 class="display-4">Добавить нового сотрудника</h1>
+    <div class="flex flex-row justify-center mt-5 gap-5">    
+        <div class="col-md-4 grow">
+            <form asp-action="Add" asp-asp-controller="Employee" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label">Фамилия</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Иванов" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label">Имя</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Иван" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MiddleName" class="control-label">Отчество</label>
+                    <input asp-for="MiddleName" class="form-control" placeholder="Иванович" />
+                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Department" class="control-label">Отдел</label>
+                    <input asp-for="Department" type="form-control" class="form-control" 
+                        placeholder="Название отдела" />
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label">Номер телефона</label>
+                    <input id="phoneInput" asp-for="PhoneNumber" type="form-control" class="form-control" 
+                        placeholder="79998887766" oninput="formatPhone(this.value)"/>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <font color="#FF1827"><a style="font-size:15px;">@ViewData["ErrorMessage"]</a></font>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
