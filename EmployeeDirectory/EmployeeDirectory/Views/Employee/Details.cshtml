@@ -58,6 +58,8 @@
                     <input type="submit" value="Сохранить" class="btn btn-primary" />
                 </div>
             </form>
+            <a asp-action="Delete" asp-controller="Employee" asp-route-employeeId="@Model.Id" 
+                class="font-bold text-danger">Удалить сотрудника</a>
         </div>
     </div>
     <p id="updateDiv" class="font-weight-bold text-success"></p>

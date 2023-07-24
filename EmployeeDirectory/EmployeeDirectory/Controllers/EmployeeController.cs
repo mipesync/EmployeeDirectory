@@ -53,5 +53,12 @@ namespace EmployeeDirectory.Web.Controllers
 
             return RedirectToAction("Details", new { employeeId = dto.EmployeeId });
         }
+
+        public async Task<IActionResult> Delete(Guid employeeId)
+        {
+            await _employeeRepository.Delete(employeeId);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

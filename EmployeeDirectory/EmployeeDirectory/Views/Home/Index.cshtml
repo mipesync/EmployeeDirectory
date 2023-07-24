@@ -13,7 +13,6 @@
     const defaultProfilePhoto = "https://images.vexels.com/media/users/3/145908/raw/52eabf633ca6414e60a7677b0b917d92-criador-de-avatar-masculino.jpg";
 
     function getById(id) {
-        console.log(id);
         location.href = "@Url.Action("Details", "Employee", new { employeeId = "id"})"
             .replace("id", id.toString());
     }
@@ -23,13 +22,9 @@
         .build();
  
     hubConnection.on("Search", function (data) {
-        console.log(data);
-
         let searchContainer = document.getElementById("searchContainer");        
         $('#searchContainer').empty();
         for (let i = 0; i < data.length; i++){
-            console.log(data[i]);
-
             let table = document.createElement("table");
             table.className = "table";
 
@@ -75,6 +70,10 @@
         hubConnection.invoke("Search", query);
     }
 
+    function clearSearch(){
+        setTimeout(() => { $('#searchContainer').empty() }, 100);        
+    }
+
     hubConnection.start();
 
 </script>
@@ -87,7 +86,7 @@
             <div class="w-1/2">
                 <div class="relative">
                     <input class="input-group-text m-3 w-full text-left" type="search"
-                       oninput="searchEmployees(this.value)"
+                       oninput="searchEmployees(this.value)" onblur="clearSearch()"
                        placeholder="Введите ФИО или номер телефона" />
                     <div id="searchContainer" class="absolute bg-light">
                     </div>
