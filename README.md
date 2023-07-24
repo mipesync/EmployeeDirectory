@@ -1,7 +1,7 @@
 # __Тестовое задание "Справочник сотрудников"__
 Перед запуском проекта:
 * Измените строку подключения SQLServer в файле [appsettings.json](EmployeeDirectory/EmployeeDirectory/appsettings.json)
-* Миграцию в БД командой _Add-Migration_
+* Сделайте миграцию в БД командой _Update-Database_
 * Импортируйте [датасет](EmployeeDirectory/EmployeeDirectory/EmployeesDataset.txt) в БД
 ***
 #### !!! Если при загрузке фотографии сотрудника останавливается проект, то попробуйте другой браузер 
